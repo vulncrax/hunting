@@ -17,7 +17,7 @@ cat live-subs.txt | sudo  gau --threads 5 --o links.txt
 
 
 ```bash
-cat live-subs.txt | dirsearch --stdin
+cat live-subs.txt | sudo dirsearch --stdin
 ```
 
 ```bash
