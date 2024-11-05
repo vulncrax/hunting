@@ -6,7 +6,7 @@
 
 
 ```bash
- assetfinder --subs-only vulncrax.com | sudo httpx -mc 200 -o live-subs.txt 
+ assetfinder --subs-only vulncrax.com | sudo httpx -status-code -title -tech-detect -mc 200 -o live-subs.txt 
 ```
 
 
@@ -33,13 +33,11 @@ nuclei -t /root/nuclei-templates/takeovers/ -l live-subs.txt
 ```bash
 subzy run --targets live-subs.txt
 ```
-```bash
-subzy run --target test.target.com
-```
 
-```bash
-subzy run --target test.target1.com,https://test.target2.com
-```
+
+
+
+
 <h2>collecting urls and Parameters :</h2>
 
 ```bash
