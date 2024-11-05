@@ -3,24 +3,15 @@
 
 
 <h2>Recon :-</h2>
-<h2>Subdomain enumeration </h2>
+
 
 ```bash
-subfinder -dL target-domains.txt -o subfinder.txt
-```
+ assetfinder --subs-only vulncrax.com | sudo httpx -mc 200 -o live-subs.txt
 
-or
-```bash
 
-subfinder -d target.com -o subfinder.txt
-```
 
 ```bash
-amass enum -passive -norecursive -noalts -df target-domains.txt -o amass.txt
-```
-
-```bash
-sublist3r -d target.com -o sublist3r.txt
+cat live-subs.txt | sudo  gau --threads 5 --o links.txt
 ```
 
 ```bash
