@@ -6,7 +6,11 @@
 
 
 ```bash
- assetfinder --subs-only vulncrax.com | sudo httpx -status-code -title -tech-detect -mc 200 -o live-subs.txt 
+ assetfinder --subs-only vulncrax.com | sudo httpx  -mc 200 -o live-subs.txt
+```
+
+```bash
+cat live-subs.txt | sudo httpx -status-code -title -tech-detect -mc 200
 ```
 
 
