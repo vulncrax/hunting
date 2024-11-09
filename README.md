@@ -30,7 +30,7 @@ ffuf -u https://target.com/FUZZ -w wordlist.txt -mc 200,403,301,302 -c true -v -
 <h2>Finding api end point :-</h2>
 
 ```bash
-python3 api_fuzzer.py https://target.com
+python3 api_fuzzer.py https://target.com | grep -v 404
 ```
 
 
