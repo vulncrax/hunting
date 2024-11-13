@@ -6,7 +6,7 @@
 
 
 ```bash
- assetfinder --subs-only vulncrax.com | sudo httpx  -mc 200 -o live-subs.txt
+ assetfinder --subs-only vulncrax.com | anew | sudo httpx  -mc 200 -o live-subs.txt
 ```
 
 ```bash
