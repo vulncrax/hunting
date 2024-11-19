@@ -38,7 +38,7 @@ python3 api_fuzzer.py https://target.com | grep -v 404
 <h2>Subdomain Takeover :-</h2>
 
 ```bash
-nuclei -t /root/nuclei-templates/takeovers/ -l live-subs.txt
+nuclei -t /home/vulncrax/nuclei-templates/http/takeovers -l live-subs.txt
 ```
 ```bash
 subzy run --targets live-subs.txt
