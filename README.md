@@ -56,6 +56,9 @@ subzy run --targets live-subs.txt
 cat live-subs.txt | grep -i "="
 
 ```
+<h2>finding  OpenRedireX </h2>
+```bash
+https://vulncrax.com/home?lang=de&returnUrl=https://evil.com/
 
 
 
