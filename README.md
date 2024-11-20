@@ -27,11 +27,6 @@ cat live-subs.txt | sudo dirsearch --stdin
 ```bash
 ffuf -u https://target.com/FUZZ -w wordlist.txt -mc 200,403,301,302 -c true -v -o output.txt
 ```
-<h2>Finding api end point :-</h2>
-
-```bash
-python3 api_fuzzer.py https://target.com | grep -v 404
-```
 
 
 
@@ -46,8 +41,6 @@ subzy run --targets live-subs.txt
 
 
 
-
-
 <h2>collecting urls and Parameters :</h2>
 
 
@@ -57,6 +50,7 @@ cat live-subs.txt | grep -i "="
 
 ```
 <h2>finding  OpenRedireX </h2>
+
 ```bash
 https://vulncrax.com/home?lang=de&returnUrl=https://evil.com/
 
