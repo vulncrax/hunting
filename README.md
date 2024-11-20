@@ -53,6 +53,7 @@ cat live-subs.txt | grep -i "="
 
 ```bash
 https://vulncrax.com/home?lang=de&returnUrl=https://evil.com/
+```
 
 
 
