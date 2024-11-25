@@ -143,3 +143,17 @@ waybackurls target.com | grep -a -i \=http | qsreplace 'evil.com' | while read h
 httpx -l i.txt -path "///evil.com" -status-code -mc 302
 ```
 
+<h1>Google dorking</h1>
+
+```bash
+ext:log site:.et
+```
+
+```bash
+inurl:"?url=http" site:.et
+```
+
+```bash
+site:id filetype:sql
+```
+
